@@ -19,106 +19,49 @@ const {
     isString,
     pick,
 } = U;
-
 type ChartMock = Partial<Chart> & {
     navigator: StandaloneNavigator,
     renderTo: HTMLElement,
     isMock: true
 }
+type StandaloneNavigatorOptions = {
+    navigator: NavigatorOptions,
+    scrollbar: ScrollbarOptions,
+    width: number,
+    height: number
+}
 
+const defaultNavOptions = {
+    width: 400,
+    height: 50,
+    navigator: {
+
+    }
+}
+
+const forcedNavOptions = {
+    xAxis: {
+
+    },
+    yAxis: {
+
+    }
+}
 class StandaloneNavigator extends Navigator {
     public static navigator(
         renderTo: (string|globalThis.HTMLElement),
-        options: DeepPartial<NavigatorOptions>
+        options: DeepPartial<StandaloneNavigatorOptions>
     ): StandaloneNavigator {
         // TODO: should be default options
-        options = merge({}, options);
+        const mergedOptions = merge(defaultNavOptions, options, forcedNavOptions) as StandaloneNavigatorOptions
 
-        // get container element by id
         const element = isString(renderTo) ? document.getElementById(renderTo) : renderTo;
 
         if (!element) {
             throw new Error('wrong renderTo argument');
         }
 
-        const WIDTH = 400;
-        const renderer = new SVGRenderer(
-            element,
-            WIDTH,
-            300
-        ) as Chart.Renderer;
-
-        // TODO: Figure out how to use the renderer below
-        // const Renderer = options.renderer || !svg ?
-        //     RendererRegistry.getRendererType(optionsChart.renderer) :
-        //     SVGRenderer;
-
-        const chartMock = {
-            isMock: true,
-            time: G.time,
-            userOptions: {
-
-            },
-            options: (G as any).merge(
-                (G as any).getOptions(), {
-                colors: ['red', 'green'],
-                navigator: {
-                    series: {
-                        data: [1, 2, 3, 12, 1, 2, 1, 2, 3, 1],
-                        type: 'line'
-                    },
-                    xAxis: {
-                        crosshair: false,
-                        width: WIDTH - 20
-                    },
-                    enabled: true
-                },
-                scrollbar: {
-                    enabled: true
-                }
-            }
-            ),
-            renderer: renderer,
-            xAxis: [{
-                len: WIDTH - 20,
-                options: {
-                    // maxRange: 10000,
-                    width: WIDTH - 20
-                },
-                // minRange: 0.1,
-                setExtremes: function (min: number, max: number) {
-                    console.log(min, max)
-                }
-            }],
-            yAxis: [{
-                options: {
-
-                }
-            }],
-            series: [],
-            axes: [],
-            orderItems: function () { },
-            initSeries: (G as any).Chart.prototype.initSeries,
-            renderTo: renderer.box,
-            container: renderer.box,
-            pointer: {
-                normalize: (e: any) => {
-                    e.chartX = e.pageX;
-                    e.chartY = e.pageY;
-                    return e;
-                }
-            },
-            plotLeft: 10,
-            plotTop: 0,
-            plotWidth: WIDTH - 20,
-            plotHeight: renderer.height,
-            sharedClips: [],
-            spacing: [0, 0, 0, 0],
-            margin: [0, 0, 0, 0],
-            numberFormatter: (G as any).numberFormat
-
-        } as unknown as ChartMock;
-
+        const chartMock = StandaloneNavigator.getChartMock(element, mergedOptions)
 
         return new StandaloneNavigator(chartMock);
     }
@@ -337,6 +280,81 @@ class StandaloneNavigator extends Navigator {
 
         // TODO: Init some extremes, API method?
         nav.render(2, 8);
+    }
+
+    public static getChartMock(element: HTMLElement, options: StandaloneNavigatorOptions): ChartMock {
+        // get container element by id
+
+        const WIDTH = options.width;
+        const HEIGHT = options.height;
+        // TODO: Figure out how to use the renderer below
+        // const Renderer = options.renderer || !svg ?
+        //     RendererRegistry.getRendererType(optionsChart.renderer) :
+        //     SVGRenderer;
+        const renderer = new SVGRenderer(
+            element,
+            WIDTH,
+            HEIGHT
+        ) as Chart.Renderer;
+
+        const chartMock = {
+            // CONTANTS
+            isMock: true,
+            time: G.time,
+            renderer: renderer,
+            series: [],
+            axes: [],
+            orderItems: function () { },
+            initSeries: (G as any).Chart.prototype.initSeries,
+            renderTo: renderer.box,
+            container: renderer.box,
+            numberFormatter: (G as any).numberFormat,
+            plotLeft: 10,
+            plotTop: 0,
+            plotWidth: WIDTH - 20,
+            pointer: {
+                normalize: (e: any) => {
+                    e.chartX = e.pageX;
+                    e.chartY = e.pageY;
+                    return e;
+                }
+            },
+            xAxis: [{
+                len: WIDTH - 20,
+                options: {
+                    // maxRange: 10000,
+                    width: WIDTH - 20
+                },
+                // minRange: 0.1,
+                setExtremes: function (min: number, max: number) {
+                    console.log(min, max)
+                },
+            }],
+            yAxis: [{
+                options: {
+
+                }
+            }],
+
+            // OPTIONS
+            userOptions: {
+
+            },
+            options: (G as any).merge(
+                (G as any).getOptions(), {
+                colors: options.color,
+                navigator: options.navigator,
+                scrollbar: options.scrollbar
+            }
+            ),
+            plotHeight: renderer.height,
+            sharedClips: [],
+            spacing: [0, 0, 0, 0],
+            margin: [0, 0, 0, 0],
+
+        } as unknown as ChartMock;
+
+        return chartMock;
     }
 }
 // function compose(navigatorClass: typeof Navigator) {

@@ -1,8 +1,7 @@
 /* *
  *
  *  (c) 2009-2023 Highsoft AS
- *
- *  Accessibility component for the navigator.
+
  *
  *  Author: Øystein Moseng
  *  License: www.highcharts.com/license
@@ -22,7 +21,7 @@
 import AccessibilityComponent from '../AccessibilityComponent.js';
 import Announcer from '../Utils/Announcer.js';
 import KeyboardNavigationHandler from '../KeyboardNavigationHandler.js';
-import Navigator from '../../Stock/Navigator/Navigator.js';
+import Navigator from '../../Stock/Navigator/ChartNavigator.js';
 import A from '../../Core/Animation/AnimationUtilities.js';
 const {
     animObject

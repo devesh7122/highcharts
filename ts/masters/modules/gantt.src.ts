@@ -15,7 +15,7 @@ import ArrowSymbols from '../../Extensions/ArrowSymbols.js';
 import Connection from '../../Gantt/Connection.js';
 import CurrentDateIndication from '../../Extensions/CurrentDateIndication.js';
 import GanttChart from '../../Core/Chart/GanttChart.js';
-import Navigator from '../../Stock/Navigator/Navigator.js';
+import Navigator from '../../Stock/Navigator/ChartNavigator.js';
 import Pathfinder from '../../Gantt/Pathfinder.js';
 import RangeSelector from '../../Stock/RangeSelector/RangeSelector.js';
 import Scrollbar from '../../Stock/Scrollbar/Scrollbar.js';
@@ -23,6 +23,7 @@ import StaticScale from '../../Extensions/StaticScale.js';
 // Series
 import XRangeSeries from '../../Series/XRange/XRangeSeries.js';
 import GanttSeries from '../../Series/Gantt/GanttSeries.js';
+import ChartNavigatorComposition from '../../Stock/Navigator/ChartNavigatorComposition.js';
 const G: AnyRecord = Highcharts;
 // Classes
 G.Connection = Connection;
@@ -36,7 +37,7 @@ G.Scrollbar = Scrollbar;
 ArrowSymbols.compose(G.SVGRenderer);
 CurrentDateIndication.compose(G.Axis, G.PlotLineOrBand);
 GanttSeries.compose(G.Axis, G.Chart, G.Series, G.Tick);
-Navigator.compose(G.Axis, G.Chart, G.Series);
+ChartNavigatorComposition.compose(G.Axis, G.Chart, G.Navigator, G.Series);
 Pathfinder.compose(G.Chart, G.Point);
 RangeSelector.compose(G.Axis, G.Chart);
 Scrollbar.compose(G.Axis);

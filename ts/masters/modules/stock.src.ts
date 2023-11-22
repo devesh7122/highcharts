@@ -15,7 +15,7 @@ import './datagrouping.src.js';
 import './mouse-wheel-zoom.src.js';
 import Highcharts from '../../Core/Globals.js';
 import DataModifyComposition from '../../Series/DataModifyComposition.js';
-import Navigator from '../../Stock/Navigator/Navigator.js';
+import ChartNavigator from '../../Stock/Navigator/ChartNavigator.js';
 import RangeSelector from '../../Stock/RangeSelector/RangeSelector.js';
 import Scrollbar from '../../Stock/Scrollbar/Scrollbar.js';
 import OrdinalAxis from '../../Core/Axis/OrdinalAxis.js';
@@ -24,16 +24,17 @@ import OHLCSeries from '../../Series/OHLC/OHLCSeries.js';
 import '../../Series/Candlestick/CandlestickSeries.js';
 import FlagsSeries from '../../Series/Flags/FlagsSeries.js';
 import StockChart from '../../Core/Chart/StockChart.js';
+import ChartNavigatorComposition from '../../Stock/Navigator/ChartNavigatorComposition.js';
 const G: AnyRecord = Highcharts;
 // Classes
-G.Navigator = Navigator;
+G.Navigator = ChartNavigator;
 G.RangeSelector = RangeSelector;
 G.Scrollbar = Scrollbar;
 G.StockChart = G.stockChart = StockChart.stockChart;
 // Compositions
 DataModifyComposition.compose(G.Series, G.Axis, G.Point);
 FlagsSeries.compose(G.Renderer);
-Navigator.compose(G.Axis, G.Chart, G.Series);
+ChartNavigatorComposition.compose(G.Axis, G.Chart, G.Navigator, G.Series);
 OHLCSeries.compose(G.Series);
 OrdinalAxis.compose(G.Axis, G.Series, G.Chart);
 RangeSelector.compose(G.Axis, G.Chart);

@@ -1,9 +1,9 @@
-import type Chart from '../../Core/Chart/Chart.js';
 import type { NavigatorOptions } from './NavigatorOptions';
 import type ScrollbarOptions from '../Scrollbar/ScrollbarOptions';
 import type PointerEvent from '../../Core/PointerEvent';
 import type AxisOptions from '../../Core/Axis/AxisOptions';
 import type { NavigatorAxisComposition } from '../../Core/Axis/NavigatorAxisComposition';
+import Chart from '../../Core/Chart/Chart.js';
 import Axis from '../../Core/Axis/Axis.js';
 import Navigator from './Navigator.js';
 import NavigatorComposition from './NavigatorComposition.js';
@@ -36,8 +36,32 @@ type StandaloneNavigatorOptions = {
 const defaultNavOptions = {
 	width: 400,
 	height: 50,
-	navigator: {},
-	scrollbar: {},
+    tooltip: {
+        enabled: false
+    },
+	navigator: {
+        enabled: true
+    },
+	scrollbar: {
+        enabled: false
+    },
+    legend: {
+        enabled: false
+    },
+    yAxis: {
+        height: 0,
+        visible: false
+    },
+    xAxis: {
+        visible: false
+    },
+    title: {
+        text: null
+    },
+    chart: {
+        spacing: [0, 0, 0, 0],
+        margin: [0, 0, 0, 0]
+    }
 };
 
 declare module "../../Core/GlobalsLike.d.ts" {
@@ -75,8 +99,6 @@ class StandaloneNavigator {
     public navigator: Navigator;
     public plotHeight: number;
     public sharedClips: Array<any>;
-    public spacing: [number, number, number, number];
-    public margin: [number, number, number, number];
     public pointer = {
         normalize: (e: any) => {
             e.chartX = e.pageX;
@@ -117,7 +139,7 @@ class StandaloneNavigator {
     }
 
     constructor(element: HTMLElement, options: StandaloneNavigatorOptions) {
-// get container element by id
+
 
         const WIDTH = options.width;
         const HEIGHT = options.height;
@@ -147,8 +169,6 @@ class StandaloneNavigator {
         this.options = options;
         this.plotHeight = renderer.height;
         this.sharedClips = [];
-        this.spacing = [0, 0, 0, 0];
-        this.margin = [0, 0, 0, 0];
         this.xAxis = [{
             len: WIDTH - 20,
             options: {
@@ -165,15 +185,11 @@ class StandaloneNavigator {
 
             }
         }];
+        const chart = new Chart(element, options);
 
-        //TODO: HACK to be fixed later
-        this.navigator = new Navigator(this as any);
-        // 1. prepare what was in the chartMock
-        // 2. call Navigator constructor with `this` as an arg
-        // 3. assign the navigator to `this`
+        this.navigator = new Navigator(chart);
+        chart.navigator = this.navigator;
         this.initNavigator();
-        // 4? call init? 
-
     }
 
     public initNavigator() {

@@ -15,7 +15,7 @@ import ArrowSymbols from '../../Extensions/ArrowSymbols.js';
 import Connection from '../../Gantt/Connection.js';
 import CurrentDateIndication from '../../Extensions/CurrentDateIndication.js';
 import GanttChart from '../../Core/Chart/GanttChart.js';
-import Navigator from '../../Stock/Navigator/ChartNavigator.js';
+import Navigator from '../../Stock/Navigator/Navigator.js';
 import Pathfinder from '../../Gantt/Pathfinder.js';
 import RangeSelector from '../../Stock/RangeSelector/RangeSelector.js';
 import Scrollbar from '../../Stock/Scrollbar/Scrollbar.js';

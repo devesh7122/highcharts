@@ -18,7 +18,8 @@
 
 import type Axis from '../../Core/Axis/Axis';
 import type Chart from '../../Core/Chart/Chart';
-import type ChartNavigator from './ChartNavigator';
+
+import type Navigator from './Navigator';
 import type Scrollbar from '../Scrollbar/Scrollbar';
 import type Series from '../../Core/Series/Series';
 
@@ -50,9 +51,9 @@ const {
 
 declare module '../../Core/Chart/ChartLike'{
     interface ChartLike {
-        navigator?: ChartNavigator;
+        navigator?: Navigator;
         scrollbar?: Scrollbar;
-        scroller?: ChartNavigator;
+        scroller?: Navigator;
     }
 }
 
@@ -83,7 +84,7 @@ const composedMembers: Array<unknown> = [];
  *
  * */
 
-let NavigatorConstructor: typeof ChartNavigator;
+let NavigatorConstructor: typeof Navigator;
 
 /* *
  *
@@ -97,7 +98,7 @@ let NavigatorConstructor: typeof ChartNavigator;
 function compose(
     AxisClass: typeof Axis,
     ChartClass: typeof Chart,
-    NavigatorClass: typeof ChartNavigator,
+    NavigatorClass: typeof Navigator,
     SeriesClass: typeof Series
 ): void {
     NavigatorAxisAdditions.compose(AxisClass);

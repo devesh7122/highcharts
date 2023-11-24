@@ -24,6 +24,7 @@ import StaticScale from '../../Extensions/StaticScale.js';
 import XRangeSeries from '../../Series/XRange/XRangeSeries.js';
 import GanttSeries from '../../Series/Gantt/GanttSeries.js';
 import ChartNavigatorComposition from '../../Stock/Navigator/ChartNavigatorComposition.js';
+import NavigatorComposition from '../../Stock/Navigator/NavigatorComposition.js';
 const G: AnyRecord = Highcharts;
 // Classes
 G.Connection = Connection;
@@ -37,7 +38,8 @@ G.Scrollbar = Scrollbar;
 ArrowSymbols.compose(G.SVGRenderer);
 CurrentDateIndication.compose(G.Axis, G.PlotLineOrBand);
 GanttSeries.compose(G.Axis, G.Chart, G.Series, G.Tick);
-ChartNavigatorComposition.compose(G.Axis, G.Chart, G.Navigator, G.Series);
+NavigatorComposition.compose(G.Axis, G.Navigator, G.Series);
+ChartNavigatorComposition.compose(G.Chart, G.Navigator);
 Pathfinder.compose(G.Chart, G.Point);
 RangeSelector.compose(G.Axis, G.Chart);
 Scrollbar.compose(G.Axis);

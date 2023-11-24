@@ -75,7 +75,6 @@ const composedMembers: Array<unknown> = [];
  *
  * */
 
-let NavigatorConstructor: typeof Navigator;
 
 /* *
  *
@@ -92,7 +91,6 @@ function compose(
     SeriesClass: typeof Series
 ): void {
     NavigatorAxisAdditions.compose(AxisClass);
-    NavigatorConstructor = NavigatorClass;
 
     if (U.pushUnique(composedMembers, SeriesClass)) {
         addEvent(SeriesClass, 'afterUpdate', onSeriesAfterUpdate);
